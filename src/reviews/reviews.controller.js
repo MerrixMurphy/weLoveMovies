@@ -13,18 +13,15 @@ async function correctId(req, res, next) {
   });
 }
 
-//figure out why req.body.data not working and add in the critics
+//figure out why update returns undefined
 async function update(req, res, next) {
-  // console.log("Check");
-  // console.log(res.locals.review.content);
-  console.log(req.body);
   const updatedReview = {
     ...res.locals.review,
-    // content: res.locals.review.content,
+    // content: res.locals.review.content,s
   };
-  console.log(updatedReview);
+  // console.log(updatedReview);
   const data = await reviewsService.update(updatedReview);
-  console.log(data);
+  // console.log(data);
   res.json({ data });
 }
 
