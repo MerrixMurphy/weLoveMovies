@@ -17,11 +17,18 @@ async function list(req, res, next) {
   const is_showing = req.query.is_showing;
   if (is_showing) {
     const data = await moviesService.listShowing();
-    //fix 45 items returning instead of 15
-    //console.log(data);
-    res.json({ data });
+    const checkMovie = [];
+    const newMovies = [];
+    data.forEach((dat) => {
+      const movie = dat.movie_id;
+      if (!checkMovie.includes(movie)) {
+        checkMovie.push(movie);
+        newMovies.push(dat);
+      }
+    });
+    res.json({ data: newMovies });
   } else {
-    const data = await moviesService.list();
+    const data = await moviesService.list(is_showing);
     res.json({ data });
   }
 }

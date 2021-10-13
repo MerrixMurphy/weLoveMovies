@@ -1,5 +1,6 @@
 const reviewsService = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const reduceProp = require("../utils/reduce-properties");
 
 async function correctId(req, res, next) {
   const review = await reviewsService.read(req.params.reviewId);
@@ -13,15 +14,22 @@ async function correctId(req, res, next) {
   });
 }
 
+const reducedCritics = reduceProp("review_id", {
+  organization_name: ["critic", null, "organization_name"],
+  preferred_name: ["critic", null, "preferred_name"],
+  surname: ["critic", null, "surname"],
+});
+
 //figure out why update returns undefined
 async function update(req, res, next) {
-  const updatedReview = {
-    ...res.locals.review,
-    // content: res.locals.review.content,s
+  const check = {
+    score: res.locals.review.score,
+    content: res.locals.review.content,
   };
-  // console.log(updatedReview);
-  const data = await reviewsService.update(updatedReview);
-  // console.log(data);
+  const data = await reviewsService.update(check);
+  console.log(data);
+  // const reducedData = reducedCritics(data);
+  // console.log(reducedData);
   res.json({ data });
 }
 

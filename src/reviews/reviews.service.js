@@ -5,7 +5,8 @@ function read(review_id) {
 }
 
 function update(updatedReview) {
-  return knex("reviews")
+  return knex("reviews as r")
+    .join("critics as c", "c.critic_id", "r.critic_id")
     .select("*")
     .where({ review_id: updatedReview.review_id })
     .update(updatedReview, "*")
