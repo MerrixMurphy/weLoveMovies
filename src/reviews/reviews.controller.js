@@ -23,6 +23,7 @@ const reducedCritics = reduceProp("review_id", {
 //figure out why update returns undefined
 async function update(req, res, next) {
   const check = {
+    critic_id: res.locals.review.critic_id,
     score: res.locals.review.score,
     content: res.locals.review.content,
   };
