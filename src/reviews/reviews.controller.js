@@ -14,24 +14,24 @@ async function correctId(req, res, next) {
   });
 }
 
-const reducedCritics = reduceProp("review_id", {
-  organization_name: ["critic", null, "organization_name"],
+const reducedCritics = reduceProp("critic_id", {
+  critic_id: ["critic", null, "critic_id"],
+  review_id: ["critic", null, "review_id"],
   preferred_name: ["critic", null, "preferred_name"],
   surname: ["critic", null, "surname"],
+  organization_name: ["critic", null, "organization_name"],
 });
 
 //figure out why update returns undefined
 async function update(req, res, next) {
   const check = {
-    critic_id: res.locals.review.critic_id,
-    score: res.locals.review.score,
-    content: res.locals.review.content,
+    ...res.locals.review,
+    content: req.body.data.content,
   };
-  const data = await reviewsService.update(check);
-  console.log(data);
-  // const reducedData = reducedCritics(data);
-  // console.log(reducedData);
-  res.json({ data });
+  console.log(check);
+  await reviewsService.update(check);
+  const reducedData = reducedCritics([check]);
+  res.json({ data: reducedData[0] });
 }
 
 async function destroy(req, res, next) {

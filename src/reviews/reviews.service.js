@@ -8,9 +8,8 @@ function update(updatedReview) {
   return knex("reviews as r")
     .join("critics as c", "c.critic_id", "r.critic_id")
     .select("*")
-    .where({ critic_id: updatedReview.critic_id })
-    .update(updatedReview, "*")
-    .then((review) => review[0]);
+    .where({ review_id: updatedReview.review_id })
+    .update(updatedReview, "*");
 }
 
 function destroy(review_id) {
