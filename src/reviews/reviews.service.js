@@ -5,11 +5,16 @@ function read(review_id) {
 }
 
 function update(updatedReview) {
-  return knex("reviews as r")
-    .join("critics as c", "c.critic_id", "r.critic_id")
+  return knex("reviews")
     .select("*")
     .where({ review_id: updatedReview.review_id })
-    .update(updatedReview, "*");
+    .update(updatedReview, "*")
+    .then(() => {
+      return knex("critics")
+        .select("*")
+        .where({ critic_id: updatedReview.critic_id })
+        .first();
+    });
 }
 
 function destroy(review_id) {

@@ -24,14 +24,14 @@ const reducedCritics = reduceProp("critic_id", {
 
 //figure out why update returns undefined
 async function update(req, res, next) {
-  const check = {
+  const toUpdate = {
     ...res.locals.review,
-    content: req.body.data.content,
+    ...req.body.data,
+    review_id: res.locals.review.review_id,
   };
-  console.log(check);
-  await reviewsService.update(check);
-  const reducedData = reducedCritics([check]);
-  res.json({ data: reducedData[0] });
+  const updatedReview = await reviewsService.update(toUpdate);
+  toUpdate.critic = updatedReview;
+  res.json({ data: toUpdate });
 }
 
 async function destroy(req, res, next) {
