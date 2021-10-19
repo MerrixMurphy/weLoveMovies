@@ -13,7 +13,6 @@ async function correctId(req, res, next) {
   });
 }
 
-//figure out why update returns undefined
 async function update(req, res, next) {
   const toUpdate = {
     ...res.locals.review,
@@ -22,7 +21,6 @@ async function update(req, res, next) {
   };
   const updatedReview = await reviewsService.update(toUpdate);
   toUpdate.critic = updatedReview;
-  console.log(toUpdate);
   res.json({ data: toUpdate });
 }
 
